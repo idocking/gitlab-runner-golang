@@ -1,0 +1,40 @@
+FROM golang:1.8.3-alpine3.6
+
+ENV GITLAB_RUNNER_VERSION v10.0.0
+
+RUN adduser -D -S -h /home/gitlab-runner gitlab-runner
+
+RUN apk add --update \
+    bash \
+    ca-certificates \
+    git \
+    openssl \
+    tzdata \
+    wget
+
+
+COPY checksums.sha256 /tmp/
+
+RUN wget -q https://gitlab-runner-downloads.s3.amazonaws.com/$GITLAB_RUNNER_VERSION/binaries/gitlab-runner-linux-amd64 -O /usr/bin/gitlab-runner && \
+    chmod +x /usr/bin/gitlab-runner && \
+    ln -s /usr/bin/gitlab-runner /usr/bin/gitlab-ci-multi-runner && \
+    gitlab-runner --version && \
+    mkdir -p /etc/gitlab-runner/certs && \
+    chmod -R 700 /etc/gitlab-runner
+
+RUN wget -q https://github.com/docker/machine/releases/download/v0.12.2/docker-machine-Linux-x86_64 -O /usr/bin/docker-machine && \
+    chmod +x /usr/bin/docker-machine && \
+    docker-machine --version
+
+RUN wget -q https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64 -O /usr/bin/dumb-init && \
+    chmod +x /usr/bin/dumb-init && \
+    dumb-init --version
+
+RUN sha256sum -c -w /tmp/checksums.sha256
+
+COPY entrypoint /
+RUN chmod +x /entrypoint
+
+VOLUME ["/etc/gitlab-runner", "/home/gitlab-runner"]
+ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint"]
+CMD ["run", "--user=gitlab-runner", "--working-directory=/home/gitlab-runner"]
