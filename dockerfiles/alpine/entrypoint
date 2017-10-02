@@ -7,15 +7,28 @@ CONFIG_FILE=${CONFIG_FILE:-$DATA_DIR/config.toml}
 CA_CERTIFICATES_PATH=${CA_CERTIFICATES_PATH:-$DATA_DIR/certs/ca.crt}
 LOCAL_CA_PATH="/usr/local/share/ca-certificates/ca.crt"
 
+REGISTERED_FILE="$HOME/.runner-registered"
+
 update_ca() {
   echo "Updating CA certificates..."
   cp "${CA_CERTIFICATES_PATH}" "${LOCAL_CA_PATH}"
   update-ca-certificates --fresh >/dev/null
 }
 
+register_gitlab_runner() {
+    echo "Registering gitlab-runner..."
+    gitlab-runner register --non-interactive >/dev/null \
+    && touch ${REGISTERED_FILE}
+}
+
+
 if [ -f "${CA_CERTIFICATES_PATH}" ]; then
   # update the ca if the custom ca is different than the current
   cmp -s "${CA_CERTIFICATES_PATH}" "${LOCAL_CA_PATH}" || update_ca
+fi
+
+if [ ! -f "${REGISTERED_FILE}" ]; then
+  register_gitlab_runner
 fi
 
 # launch gitlab-runner passing all arguments
