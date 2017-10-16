@@ -25,6 +25,9 @@ RUN adduser -D -S -h /home/gitlab-runner gitlab-runner \
     iptables \
     xfsprogs \
     xz \
+    curl \
+    # Install golang dep package manager
+    && go get -u github.com/golang/dep/cmd/dep \
     # Install gitlab runner
     && wget  https://gitlab-runner-downloads.s3.amazonaws.com/$GITLAB_RUNNER_VERSION/binaries/gitlab-runner-linux-amd64 -O /usr/bin/gitlab-runner \
     && chmod +x /usr/bin/gitlab-runner \
