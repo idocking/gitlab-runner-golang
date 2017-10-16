@@ -13,6 +13,7 @@ RUN adduser -D -S -h /home/gitlab-runner gitlab-runner \
     # Install packages
     && apk add --no-cache --update \
     bash \
+    make \
     ca-certificates \
     git \
     openssl \
@@ -76,7 +77,7 @@ RUN adduser -D -S -h /home/gitlab-runner gitlab-runner \
         apk del .fetch-deps; \
         \
         dockerd -v; \
-        docker -v \
+        docker -v; \
         chmod +x /entrypoint
 
 VOLUME ["/etc/gitlab-runner", "/home/gitlab-runner", "/var/lib/docker"]
