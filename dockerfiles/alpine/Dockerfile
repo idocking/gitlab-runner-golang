@@ -1,4 +1,4 @@
-FROM golang:1.8.3-alpine3.6
+FROM golang:1.8.4-alpine3.6
 
 ENV DOCKER_CHANNEL stable
 ENV DOCKER_VERSION 17.09.0-ce
