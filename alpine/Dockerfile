@@ -9,7 +9,7 @@ ENV GITLAB_RUNNER_VERSION v10.0.0
 COPY checksums.sha256 /tmp/
 COPY entrypoint /
 
-RUN adduser -D -S -h /home/gitlab-runner gitlab-runner \
+RUN adduser -D -u 1000 -S -h /home/gitlab-runner gitlab-runner \
     # Install packages
     && apk add --no-cache --update \
     bash \
