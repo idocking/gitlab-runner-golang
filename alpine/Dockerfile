@@ -9,9 +9,8 @@ ENV GITLAB_RUNNER_VERSION v10.0.0
 COPY checksums.sha256 /tmp/
 COPY entrypoint /
 
-RUN addgroup -g 1000 \
-    && adduser -D -u 1000 -S -h /home/gitlab-runner gitlab-runner \
-    && adduser -g 1000 gitlab-runner \
+RUN addgroup -S gitlab-runner -g 1000 \
+    && adduser -D -u 1000 -S -h /home/gitlab-runner -G gitlab-runner gitlab-runner \
     # Install packages
     && apk add --no-cache --update \
     bash \
