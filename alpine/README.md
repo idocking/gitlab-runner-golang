@@ -15,7 +15,7 @@ make alpine
 
 ```yml
 gitlab-runner:
-  image: 'idocking/gitlab-runner-golang:1.8.4-alpine3.6'
+  image: 'idocking/gitlab-runner-golang:1.9.4-alpine3.6'
   restart: always
   environment:
   - CI_SERVER_URL=http://gitlab.domain.com
@@ -35,7 +35,7 @@ if you want register other runner executor, you could execute `gitlab-runner reg
 
 ```
 gitlab-runner:
-  image: 'idocking/gitlab-runner-golang:1.8.4-alpine3.6'
+  image: 'idocking/gitlab-runner-golang:1.9.4-alpine3.6'
   restart: always
   links:
   - docker

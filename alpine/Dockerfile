@@ -1,10 +1,10 @@
-FROM golang:1.8.4-alpine3.6
+FROM golang:1.9.4-alpine3.6
 
 ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 17.09.0-ce
+ENV DOCKER_VERSION 18.02.0-ce
 ENV DOCKER_HOST='tcp://docker:2375'
 
-ENV GITLAB_RUNNER_VERSION v10.0.0
+ENV GITLAB_RUNNER_VERSION v10.5.0
 
 COPY checksums.sha256 /tmp/
 COPY entrypoint /
@@ -37,11 +37,11 @@ RUN addgroup -S gitlab-runner -g 1000 \
     && mkdir -p /etc/gitlab-runner/certs \
     && chmod -R 700 /etc/gitlab-runner \
     # Install docker-machine
-    && wget  https://github.com/docker/machine/releases/download/v0.12.2/docker-machine-Linux-x86_64 -O /usr/bin/docker-machine \
+    && wget  https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-Linux-x86_64 -O /usr/bin/docker-machine \
     && chmod +x /usr/bin/docker-machine \
     && docker-machine --version \
     # Install dumb-init
-    && wget  https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64 -O /usr/bin/dumb-init \
+    && wget  https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 -O /usr/bin/dumb-init \
     && chmod +x /usr/bin/dumb-init \
     && dumb-init --version \
     && sha256sum -c -w /tmp/checksums.sha256 \
