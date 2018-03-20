@@ -1,6 +1,6 @@
 FROM golang:1.9.4-alpine3.6
 
-ENV DOCKER_CHANNEL stable
+ENV DOCKER_CHANNEL edge
 ENV DOCKER_VERSION 18.02.0-ce
 ENV DOCKER_HOST='tcp://docker:2375'
 
@@ -60,6 +60,7 @@ RUN addgroup -S gitlab-runner -g 1000 \
         apkArch="$(apk --print-arch)"; \
         case "$apkArch" in \
             x86_64) dockerArch='x86_64' ;; \
+            armhf) dockerArch='armel' ;; \
             aarch64) dockerArch='aarch64' ;; \
             ppc64le) dockerArch='ppc64le' ;; \
             s390x) dockerArch='s390x' ;; \
