@@ -24,6 +24,8 @@ if [ -f "${CA_CERTIFICATES_PATH}" ]; then
   cmp -s "${CA_CERTIFICATES_PATH}" "${LOCAL_CA_PATH}" || update_ca
 fi
 
+touch "/etc/gitlab-runner/config.toml"
+
 if [ `grep token /etc/gitlab-runner/config.toml | wc -l` == 0 ]; then
   register_gitlab_runner
 fi
